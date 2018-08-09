@@ -12,10 +12,12 @@ class PhoneForm extends Component{
     }
 
     handleSubmit = (e) => {
-        //prevent page reloading 
+        // page reloading 방지(불변성 유지)
         e.preventDefault();
+
         // 상태값을 onCreate 를 통하여 부모에게 전달
         this.props.onCreate(this.state);
+
         // 상태 초기화
         this.setState({
             name:'',
