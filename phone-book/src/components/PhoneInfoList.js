@@ -3,7 +3,9 @@ import PhoneInfo from './PhoneInfo';
 
 class PhoneInfoList extends Component{
     static defaultProps = {
-        data: []
+        data: [],
+        onRemove: () => console.warn('onRemove not defined'),
+        onUpdate: () => console.warn('onUpdate not defined')
     }
 
     /**
@@ -14,9 +16,15 @@ class PhoneInfoList extends Component{
      * 따라서 key값에 고정값을 부여하는것이 좋다.
      */
     render() {
-        const { data } = this.props;
+        const { data, onRemove, onUpdate } = this.props;
         const list = data.map(
-            info => (<PhoneInfo key={info.id} info={info} />)
+            info => (
+                <PhoneInfo
+                    key={info.id}
+                    info={info}
+                    onRemove={onRemove}
+                    onUpdate={onUpdate}
+                />)
         );
 
         return(
