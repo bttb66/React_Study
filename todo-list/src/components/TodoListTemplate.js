@@ -5,7 +5,7 @@ const TodoListTemplate = ({form, children, palette}) => {
     return (
         <main className="todo-list-template">
             <div className="title">
-                오늘 할 일
+                <b>오늘 할 일</b>
             </div>
             <section className="palette-wrapper">
                 {palette}
