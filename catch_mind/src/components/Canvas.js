@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Canvas.css'
 
-var ctx, context;
+var ctx;
 var pos = {
     drawable : false,
     X : -1,
@@ -11,18 +11,14 @@ class Canvas extends Component {
 
     onLoad(){
         ctx = this.canvas.getContext("2d");
-        context=this;
-        // this.canvas.addEventListener("mousedown", this.listener);
-        // this.canvas.addEventListener("mousemove", this.listener);
-        // this.canvas.addEventListener("mouseout", this.listener);
-        // this.canvas.addEventListener("mouseup", this.listener);
-
     }
 
     initDraw(event){
+        const { color } = this.props;
         ctx.beginPath();
+        ctx.strokeStyle = color;
         pos.drawable = true;
-        var coors = context.getPosition(event);
+        var coors = this.getPosition(event);
         pos.X = coors.X;
         pos.Y = coors.Y;
         ctx.moveTo(pos.X, pos.Y);
@@ -30,7 +26,7 @@ class Canvas extends Component {
 
     draw (event){
         if(!pos.drawable) return;
-        var coors = context.getPosition(event);
+        var coors = this.getPosition(event);
         ctx.lineTo(coors.X, coors.Y);
         pos.X = coors.X;
         pos.Y = coors.Y;
@@ -54,25 +50,24 @@ class Canvas extends Component {
     }
 
     onClick(){
-        ctx.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         ctx.beginPath();
     }
-/*ref={(input) => { this.textInput = input; }}*/
+
     render(){
         return (
             <div>
                 
-                <canvas className="canvas" id="canvas" width="500" height="500" 
+                <canvas className="canvas" id="canvas" width="500" height="400" 
                     ref={ref => (this.canvas = ref)}
                     onMouseDown={(event)=>{this.initDraw(event);}}
                     onMouseMove={(event)=>{this.draw(event);}}
                     onMouseOut={()=>{this.finishDraw();}}
                     onMouseUp={()=>{this.finishDraw();}}
                 >
-                
                 </canvas>
-                <br></br>
-                <button className="clear-button" id="clear-button" onClick={this.onClick}>지우기</button>
+                <br></br><br></br>
+                <button className="clear-button" id="clear-button" onClick={()=>{this.onClick()}}>지우기</button>
             </div>
         )
     }
