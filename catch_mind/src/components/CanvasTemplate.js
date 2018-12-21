@@ -3,7 +3,7 @@ import './CanvasTemplate.css';
 
 const CanvasTemplate = ({canvas, palette}) => {
     return (
-        <main className="todo-list-template">
+        <main className="canvas-template">
             <div className="title">
                 <b>Catch mind!</b>
             </div>
