@@ -10,7 +10,7 @@ import reducers from 'reducers';
 import { Provider } from 'react-redux';
 
 //스토어 생성
-const store = createStore(reducers);
+const store = createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 //리액트 앱에 편리하게 store 연동하기 위하여 Provider활용
 ReactDOM.render(
