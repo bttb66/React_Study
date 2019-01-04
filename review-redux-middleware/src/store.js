@@ -1,0 +1,12 @@
+import { createStore, applyMiddleware } from 'redux';
+import modules from 'modules';
+import loggerMiddleware from 'lib/loggerMiddleware';
+
+/* 미들웨어는 store를 생성할 때에 설정된당 
+ * 미들웨어가 여러개인 경우, 파라미터를 여러개로 설정하면 된다.
+ * ex) applyMiddleware(a, b, c)
+ * + 미들웨어의 순서는 위에서 전달한 파라미터의 순서로 결정된다.
+ */
+const store = createStore(modules, applyMiddleware(loggerMiddleware))
+
+export default store;
