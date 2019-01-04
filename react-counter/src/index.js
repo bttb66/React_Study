@@ -6,7 +6,8 @@ import * as serviceWorker from './serviceWorker';
 
 //Redux
 import { createStore } from 'redux';
-import reducers from 'reducers';
+// import reducers from 'reducers';
+import reducers from 'modules';
 import { Provider } from 'react-redux';
 
 //스토어 생성
