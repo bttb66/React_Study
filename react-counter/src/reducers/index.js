@@ -1,4 +1,6 @@
 import * as types from 'actions/ActionTypes';
+import { Map, List } from 'immutable';
+
 // import number from './number';
 // import color from './color';
 // import { combineReducers } from 'redux';
@@ -6,14 +8,14 @@ import * as types from 'actions/ActionTypes';
 
 
 //초기상태 정의
-const initialState = {
-    counters: [
-        {
+const initialState = Map({
+    counters: List([
+        Map({
             color: 'black',
             number: 0
-        }
-    ]
-};
+        })
+    ])
+});
 
 /* 
  * state와 action을 파라미터로 받는 리듀서 함수를 정의. 
@@ -22,68 +24,98 @@ const initialState = {
  * 이 때 주의할 점은, state를 직접 수정하면 안되고, 기존 상태값에 원하는 값을 덮어쓴 새로운 객체를 만들어 반환해야한다.
  */
 
- //리듀서 함수 정의
-function counter(state = initialState, action){
-    //레퍼런스 생성
-    const { counters } = state;
+ //리듀서 함수 정의 (immutable.js 활용)
+ function counter (state=initialState, action){
+     const counters = state.get('counters');
 
-    switch(action.type){
-        case types.CREATE:
-            return {
-                counters: 
-                [
-                    ...counters,
-                    {
-                        color: 'black',
-                        number: 0
-                    }
-                ]
-            }
+     switch(action.type){
+         case types.CREATE:
+            return state.set('counters', counters.push(Map({
+                color: action.color,
+                number: 0
+            })));
         case types.REMOVE:
-        // state 내부의 배열을 변경하는 경우, push()/pop()등을 통해 변경하면 안되고,
-        // slice()와 같은 메소드를 통하여 새로운 배열을 생성해야한다!
-            return {
-                counters: counters.slice(0, counters.length-1)
-            };
+            return state.set('counters', counters.pop());
         case types.INCREMENT:
-            
-            return {
-                counters: [
-                    ...counters.slice(0, action.index),
-                    {
-                        ...counters[action.index],
-                        number: counters[action.index].number + 1
-                    },
-                    ...counters.slice(action.index + 1, counters.length)
-                ]
-            };
+            return state.set('counters', counters.update(
+                action.index,
+                (counter) => counter.set('number', counter.get('number') + 1)
+            ));
         case types.DECREMENT:
-            return{
-                counters: [
-                    ...counters.slice(0, action.index),
-                    {
-                        ...counters[action.index],
-                        number: counters[action.index].number - 1
-                    },
-                    ...counters.slice(action.index + 1, counters.length)
-                ]
-            };
+            return state.set('counters', counters.update(
+                action.index,
+                (counter) => counter.set('number', counter.get('number') - 1)
+            ));
         case types.SET_COLOR:
-            return{
-                counters: [
-                    ...counters.slice(0, action.index),
-                    {
-                        ...counters[action.index],
-                        color: action.color
-                    },
-                    ...counters.slice(action.index + 1, counters.length)
-                ]
-            };
-            
+            return state.set('counters', counters.update(
+                action.index,
+                (counter) => counter.set('color', action.color)
+            ));
         default:
             return state;
-    }
-}
+     }
+ };
+// function counter(state = initialState, action){
+//     //레퍼런스 생성
+//     const { counters } = state;
+
+//     switch(action.type){
+//         case types.CREATE:
+//             return {
+//                 counters: 
+//                 [
+//                     ...counters,
+//                     {
+//                         color: 'black',
+//                         number: 0
+//                     }
+//                 ]
+//             }
+//         case types.REMOVE:
+//         // state 내부의 배열을 변경하는 경우, push()/pop()등을 통해 변경하면 안되고,
+//         // slice()와 같은 메소드를 통하여 새로운 배열을 생성해야한다!
+//             return {
+//                 counters: counters.slice(0, counters.length-1)
+//             };
+//         case types.INCREMENT:
+            
+//             return {
+//                 counters: [
+//                     ...counters.slice(0, action.index),
+//                     {
+//                         ...counters[action.index],
+//                         number: counters[action.index].number + 1
+//                     },
+//                     ...counters.slice(action.index + 1, counters.length)
+//                 ]
+//             };
+//         case types.DECREMENT:
+//             return{
+//                 counters: [
+//                     ...counters.slice(0, action.index),
+//                     {
+//                         ...counters[action.index],
+//                         number: counters[action.index].number - 1
+//                     },
+//                     ...counters.slice(action.index + 1, counters.length)
+//                 ]
+//             };
+//         case types.SET_COLOR:
+//             return{
+//                 counters: [
+//                     ...counters.slice(0, action.index),
+//                     {
+//                         ...counters[action.index],
+//                         color: action.color
+//                     },
+//                     ...counters.slice(action.index + 1, counters.length)
+//                 ]
+//             };
+            
+//         default:
+//             return state;
+//     }
+// }
 
 // const reducers = combineReducers({
 //     numberData: number,

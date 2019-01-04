@@ -1,6 +1,7 @@
 import React from 'react';
 import Counter from './Counter';
 import PropTypes from 'prop-types';
+import { List } from 'immutable';
 
 import './CounterList.css';
 
@@ -10,7 +11,7 @@ const CounterList = ({ counters, onIncrement, onDecrement, onSetColor }) => {
             <Counter
                 key = {i}
                 index = {i}
-                {...counter} //color와 number값을 전개연산자를 통해 한번에 전달
+                {...counter.toJS()} //color와 number값을 전개연산자를 통해 한번에 전달
                 onIncrement = {onIncrement}
                 onDecrement = {onDecrement}
                 onSetColor = {onSetColor}
@@ -26,10 +27,7 @@ const CounterList = ({ counters, onIncrement, onDecrement, onSetColor }) => {
 };
 
 CounterList.propTypes = {
-    counters: PropTypes.arrayOf(PropTypes.shape({
-        color: PropTypes.string,
-        number: PropTypes.number
-    })),
+    counters: PropTypes.instanceOf(List),
     onIncrement: PropTypes.func,
     onDecrement: PropTypes.func,
     onSetColor: PropTypes.func
